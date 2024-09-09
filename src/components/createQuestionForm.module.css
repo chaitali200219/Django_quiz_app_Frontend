@@ -1,0 +1,99 @@
+/* CreateQuestionForm.module.css */
+
+.formContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .inputGroup label {
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .inputGroup input,
+  .inputGroup select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .inputGroup input:focus,
+  .inputGroup select:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .optionGroup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .optionGroup input[type="text"] {
+    flex-grow: 1;
+  }
+  
+  .optionGroup label {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .tagGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .tagGroup label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+  }
+  
+  .submitButton {
+    padding: 12px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitButton:hover {
+    background-color: #0056b3;
+  }
+  
+  @media (max-width: 600px) {
+    .formContainer {
+      padding: 15px;
+    }
+  
+    .inputGroup label,
+    .submitButton {
+      font-size: 14px;
+    }
+  }
+  
