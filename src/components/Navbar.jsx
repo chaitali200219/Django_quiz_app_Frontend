@@ -1,10 +1,10 @@
+// src/components/Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './navbar.module.css'; // Import CSS module for styling
+import styles from './navbar.module.css';
 
 const Navbar = ({ username }) => {
   const handleLogout = () => {
-    // Handle logout logic
     localStorage.removeItem('authToken');
     window.location.href = '/';
   };
