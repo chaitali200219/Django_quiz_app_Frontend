@@ -8,6 +8,7 @@ import TeacherDashboard from './components/TeacherDashboard';
 import StudentDashboard from './components/StudentDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import CreateQuestionForm from './components/CreateQuestionForm';
+import CreateExamForm from './components/CreateExamForm';
 import styles from './app.module.css'; 
 
 const App = () => {
@@ -20,40 +21,57 @@ const App = () => {
 
   return (
     <ErrorBoundary>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/teacher-login" element={<Login />} />
-        <Route path="/student-login" element={<Login />} />
-        <Route 
-          path="/teacher-dashboard" 
-          element={
-            <PrivateRoute 
-              element={<TeacherDashboard />} 
-              allowedRoles={['teacher']}
+      <div className={styles.appContainer}>
+        <Navbar /> 
+
+        <div className={styles.mainContent}>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/teacher-login" element={<Login />} />
+            <Route path="/student-login" element={<Login />} />
+            <Route 
+              path="/teacher-dashboard" 
+              element={
+                <PrivateRoute 
+                  element={<TeacherDashboard />} 
+                  allowedRoles={['teacher']}
+                />
+              }
             />
-          }
-        />
-        <Route 
-          path="/student-dashboard" 
-          element={
-            <PrivateRoute 
-              element={<StudentDashboard />} 
-              allowedRoles={['student']}
+            <Route 
+              path="/student-dashboard" 
+              element={
+                <PrivateRoute 
+                  element={<StudentDashboard />} 
+                  allowedRoles={['student']}
+                />
+              }
             />
-          }
-        />
-        <Route 
-          path="/create-question" 
-          element={
-            <PrivateRoute 
-              element={<CreateQuestionForm />} 
-              allowedRoles={['teacher']} // Assuming only teachers can access this
+            <Route 
+              path="/create-question" 
+              element={
+                <PrivateRoute 
+                  element={<CreateQuestionForm />} 
+                  allowedRoles={['teacher']}
+                />
+              }
             />
-          }
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+            <Route 
+              path="/create-exam" 
+              element={
+                <PrivateRoute 
+                  element={<CreateExamForm />} 
+                  allowedRoles={['teacher']}
+                />
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </div>
+
+        <Footer />
+      </div>
     </ErrorBoundary>
   );
 };

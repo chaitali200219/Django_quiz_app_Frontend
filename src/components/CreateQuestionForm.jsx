@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbar'; // Adjust the import path as needed
-import Footer from './Footer'; 
+
 import styles from './CreateQuestionForm.module.css'; // Make sure this file exists
 
 const API_URL = 'http://localhost:8000';
@@ -159,7 +158,7 @@ const CreateQuestionForm = () => {
 
   return (
     <div className={styles.pageContainer}>
-      {isTeacher && <Navbar username={username} />}
+      
       
       <div className={styles.mainContent}>
         <h2>Create Question</h2>
@@ -245,7 +244,7 @@ const CreateQuestionForm = () => {
         </form>
       </div>
 
-      <Footer />
+      
     </div>
   );
 };
