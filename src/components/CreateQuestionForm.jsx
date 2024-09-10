@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar'; // Adjust the import path as needed
 import Footer from './Footer'; 
 import styles from './CreateQuestionForm.module.css'; // Make sure this file exists
@@ -83,6 +84,7 @@ const createQuestion = async (questionData) => {
 const CreateQuestionForm = () => {
   const [isTeacher, setIsTeacher] = useState(true); // Replace with actual logic
   const username = localStorage.getItem('username') || '';
+  const navigate = useNavigate(); // Hook for navigation
 
   const [question, setQuestion] = useState('');
   const [questionType, setQuestionType] = useState('MCQ');
@@ -147,6 +149,9 @@ const CreateQuestionForm = () => {
         : [{ content: 'True', is_correct: false }, { content: 'False', is_correct: false }]
       );
       setError('');
+
+      // Navigate to teacher dashboard
+      navigate('/teacher-dashboard');
     } catch (error) {
       setError('An error occurred while submitting the form.');
     }
@@ -238,9 +243,6 @@ const CreateQuestionForm = () => {
           ))}
           <button type="submit" className={styles.submitButton}>Create Question</button>
         </form>
-
-        
-               
       </div>
 
       <Footer />
