@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Navbar from './Navbar'; // Adjust the import path as needed
+import Footer from './Footer';
 
 const StudentDashboard = () => {
   return (
