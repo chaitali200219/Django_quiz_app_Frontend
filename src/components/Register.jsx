@@ -35,7 +35,7 @@ const Register = () => {
         body: JSON.stringify({
           username,
           password,
-          ...(userType === 'teacher' ? { experience_years } : { grades }),
+          ...(userType === 'teacher' ? { experience_years } : { grade: grades }),
         }),
       });
 

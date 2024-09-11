@@ -1,99 +1,104 @@
-/* CreateQuestionForm.module.css */
+/* src/components/CreateQuestionForm.module.css */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
 
-.formContainer {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .inputGroup label {
-    font-size: 16px;
-    font-weight: 500;
-  }
-  
-  .inputGroup input,
-  .inputGroup select {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s ease;
-  }
-  
-  .inputGroup input:focus,
-  .inputGroup select:focus {
-    border-color: #007bff;
-    outline: none;
-  }
-  
-  .optionGroup {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .optionGroup input[type="text"] {
-    flex-grow: 1;
-  }
-  
-  .optionGroup label {
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  
-  .tagGroup {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .tagGroup label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 14px;
-  }
-  
-  .submitButton {
-    padding: 12px 20px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .submitButton:hover {
-    background-color: #0056b3;
-  }
-  
-  @media (max-width: 600px) {
-    .formContainer {
-      padding: 15px;
-    }
-  
-    .inputGroup label,
-    .submitButton {
-      font-size: 14px;
-    }
-  }
-  
+.mainContent {
+  flex: 1;
+  padding: 40px;
+  max-width: 1200px; /* Increased width for desktop */
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  width: 60%;
+}
+
+h2 {
+  margin-bottom: 24px;
+  font-size: 32px; /* Larger font size for desktop */
+  color: #333;
+  font-family: 'Arial', sans-serif;
+}
+
+.error {
+  color: #d9534f;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 18px; /* Larger font size for error messages */
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup, .optionGroup {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #444;
+  font-size: 18px; /* Larger font size for labels */
+}
+
+.input, .select {
+  width: 100%;
+  padding: 14px; /* Increased padding for better touch targets */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+}
+
+.input:focus, .select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.submitButton {
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  padding: 16px 30px; /* Increased padding for larger buttons */
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px; /* Larger font size for buttons */
+  font-weight: 600;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 16px; /* Increased padding for table cells */
+  text-align: left;
+  font-size: 16px; /* Consistent font size for table text */
+}
+
+.table th {
+  background-color: #f4f4f4;
+  font-weight: 600;
+}
+
+.table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.checkboxLabel {
+  font-size: 18px; /* Larger font size for checkbox labels */
+}
