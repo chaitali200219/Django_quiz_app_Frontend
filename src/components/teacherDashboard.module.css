@@ -24,3 +24,8 @@
 .error {
   color: red;
 }
+.correctOption {
+  font-weight: bold;
+  color: green;
+}
+
