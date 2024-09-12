@@ -1,16 +1,17 @@
-
-import React, { useState } from 'react';
 import React from 'react';
-import Navbar from './Navbar'; // Adjust the import path as needed
-import Footer from './Footer'; 
-import styles from './StudentDashboard.module.css';
-
+import Navbar from '../components/Navbar'; // Adjust the path as necessary
+import styles from './StudentDashboard.module.css'; 
 
 const StudentDashboard = () => {
+  const username = localStorage.getItem('username'); // Assuming you store the username in localStorage
+
   return (
-    <div>
-      <h1>Student Dashboard</h1>
-      {/* Add your dashboard content here */}
+    <div className={styles.pageContainer}>
+      <Navbar username={username} />
+
+      <footer className={styles.footer}>
+        <p>© 2024 Your School Name. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
