@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import styles from './TeacherDashboard.module.css'; 
+import styles from './TeacherDashboard.module.css'; // Ensure this file exists
 
 const API_URL = 'http://localhost:8000';
 
-const fetchQuestions = async (teacherId, authToken) => {
-  
-
+const fetchQuestions = async (teacher_id, authToken) => {
   try {
-    const response = await fetch(`${API_URL}/questions/teachers/${teacherId}/questions/`, {
+    const response = await fetch(`${API_URL}/questions/teachers/${teacher_id}/questions/`, {
       headers: {
         'Authorization': `Bearer ${authToken}`,
         'Content-Type': 'application/json',
       },
     });
-    console.log('AuthToken:', authToken);
-console.log('TeacherId:', teacherId);
 
     if (response.ok) {
       return response.json();
@@ -30,22 +26,22 @@ console.log('TeacherId:', teacherId);
 const TeacherDashboard = () => {
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState('');
-  const [refresh, setRefresh] = useState(false); // State to trigger refresh
-
   const authToken = localStorage.getItem('authToken');
-  console.log(authToken)
-  const teacherId = localStorage.getItem('teacherId'); // Retrieve the dynamic teacher ID
-  console.log(teacherId)
+  const teacher_id = localStorage.getItem('teacher_id'); // Retrieve the teacher ID
 
   useEffect(() => {
+    // Debugging logs to check if authToken and teacherId exist
+    console.log('authToken:', authToken);
+    console.log('teacher_id:', teacher_id);
+
     const getQuestions = async () => {
-      if (!authToken || !teacherId) {
+      if (!authToken || !teacher_id) {
         setError('No authentication token or teacher ID found');
         return;
       }
 
       try {
-        const data = await fetchQuestions(teacherId, authToken);
+        const data = await fetchQuestions(teacher_id, authToken);
         setQuestions(data);
         setError(''); // Clear any previous errors
       } catch (error) {
@@ -55,35 +51,7 @@ const TeacherDashboard = () => {
     };
 
     getQuestions();
-  }, [teacherId, authToken, refresh]); // Add refresh to dependency array
-
-  // Function to refresh questions list after creating a question
-  const handleCreateQuestion = async (newQuestion) => {
-    if (!authToken || !teacherId) {
-      setError('No authentication token or teacher ID found');
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_URL}/questions/teachers/allquestions/`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newQuestion),
-      });
-
-      if (response.ok) {
-        setRefresh(prev => !prev); // Toggle refresh state
-      } else {
-        throw new Error('Failed to create question');
-      }
-    } catch (error) {
-      setError('Error creating question');
-      console.error('Error creating question:', error);
-    }
-  };
+  }, [teacher_id, authToken]);
 
   return (
     <div className={styles.pageContainer}>
@@ -99,17 +67,23 @@ const TeacherDashboard = () => {
                 <th>Content</th>
                 <th>Type</th>
                 <th>Marks</th>
-                {/* Add more columns if needed */}
+                <th>Options</th>
               </tr>
             </thead>
             <tbody>
-              {questions.map(question => (
+              {questions.map((question) => (
                 <tr key={question.id}>
                   <td>{question.id}</td>
                   <td>{question.content}</td>
                   <td>{question.question_type}</td>
                   <td>{question.marks}</td>
-                  {/* Add more columns if needed */}
+                  <td>
+                    {question.options.map((option, index) => (
+                      <div key={index}>
+                        {option.content} {option.is_correct && '(Correct)'}
+                      </div>
+                    ))}
+                  </td>
                 </tr>
               ))}
             </tbody>
