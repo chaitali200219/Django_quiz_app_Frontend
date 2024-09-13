@@ -1,11 +1,13 @@
-// src/components/Navbar.js
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './navbar.module.css';
 
-const Navbar = ({ username }) => {
+const Navbar = () => {
+  const username = localStorage.getItem('username'); // Retrieve the username from localStorage
+
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('username'); // Also remove the username when logging out
     window.location.href = '/';
   };
 
@@ -20,16 +22,20 @@ const Navbar = ({ username }) => {
         <Link to="/create-exam" className={styles.navbarLink}>Create Exam</Link>
         <Link to="/create-question" className={styles.navbarLink}>Create Questions</Link>
         <Link to="/profile" className={styles.navbarLink}>Profile</Link>
-        <div className={styles.navbarProfile}>
-          <span>{username}</span>
-          <div className={styles.dropdown}>
-            <button className={styles.dropbtn}>Profile</button>
-            <div className={styles.dropdownContent}>
-              <Link to="/profile">My Profile</Link>
-              <a href="#" onClick={handleLogout}>Logout</a>
+        {username ? ( // Check if the username is available
+          <div className={styles.navbarProfile}>
+            <span>{username}</span>
+            <div className={styles.dropdown}>
+              <button className={styles.dropbtn}>Profile</button>
+              <div className={styles.dropdownContent}>
+                <Link to="/profile">My Profile</Link>
+                <a href="#" onClick={handleLogout}>Logout</a>
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <Link to="/login" className={styles.navbarLink}>Login</Link> // Show login if not authenticated
+        )}
       </div>
     </nav>
   );

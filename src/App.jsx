@@ -4,10 +4,11 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ErrorBoundary from './components/ErrorBoundary';
 import TeacherDashboard from './components/TeacherDashboard';
 import StudentDashboard from './components/StudentDashboard';
-import ErrorBoundary from './components/ErrorBoundary';
 import CreateQuestionForm from './components/CreateQuestionForm';
+import UpdateQuestionForm from './components/UpdateQuestionForm';
 import CreateExamForm from './components/CreateExamForm';
 import styles from './app.module.css'; 
 
@@ -58,6 +59,15 @@ const App = () => {
               element={
                 <PrivateRoute 
                   element={<CreateQuestionForm />} 
+                  allowedRoles={['teacher']}
+                />
+              }
+            />
+            <Route 
+              path="/update-question/:questionId" 
+              element={
+                <PrivateRoute 
+                  element={<UpdateQuestionForm />} 
                   allowedRoles={['teacher']}
                 />
               }

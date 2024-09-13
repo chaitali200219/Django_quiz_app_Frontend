@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import styles from './TeacherDashboard.module.css'; // Ensure this file exists
+import { useNavigate } from 'react-router-dom';
+import styles from './TeacherDashboard.module.css';
 
 const API_URL = 'http://localhost:8000';
 
@@ -23,17 +24,35 @@ const fetchQuestions = async (teacher_id, authToken) => {
   }
 };
 
+const deleteQuestion = async (questionId, authToken) => {
+  try {
+    const response = await fetch(`${API_URL}/questions/questions/${questionId}/delete/`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      throw new Error('Failed to delete question');
+    }
+  } catch (error) {
+    console.error('Error deleting question:', error);
+    throw error;
+  }
+};
+
 const TeacherDashboard = () => {
   const [questions, setQuestions] = useState([]);
   const [error, setError] = useState('');
   const authToken = localStorage.getItem('authToken');
-  const teacher_id = localStorage.getItem('teacher_id'); // Retrieve the teacher ID
+  const teacher_id = localStorage.getItem('teacher_id');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Debugging logs to check if authToken and teacherId exist
-    console.log('authToken:', authToken);
-    console.log('teacher_id:', teacher_id);
-
     const getQuestions = async () => {
       if (!authToken || !teacher_id) {
         setError('No authentication token or teacher ID found');
@@ -43,22 +62,35 @@ const TeacherDashboard = () => {
       try {
         const data = await fetchQuestions(teacher_id, authToken);
         setQuestions(data);
-        setError(''); // Clear any previous errors
+        setError('');
       } catch (error) {
         setError('Error loading questions');
-        console.error('Error loading questions:', error);
       }
     };
 
     getQuestions();
-  }, [teacher_id, authToken]);
+  }, [authToken, teacher_id]); // Dependencies to ensure fetch is only called when authToken or teacher_id changes
+
+  const handleEdit = (questionId) => {
+    navigate(`/update-question/${questionId}`);
+  };
+
+  const handleDelete = async (questionId) => {
+    if (window.confirm('Are you sure you want to delete this question?')) {
+      try {
+        await deleteQuestion(questionId, authToken);
+        setQuestions(prevQuestions => prevQuestions.filter(q => q.id !== questionId));
+      } catch (error) {
+        setError('Error deleting question');
+      }
+    }
+  };
 
   return (
     <div className={styles.pageContainer}>
       <div className={styles.mainContent}>
         <h2>Teacher Dashboard</h2>
         {error && <p className={styles.error}>{error}</p>}
-        
         {questions.length > 0 ? (
           <table className={styles.table}>
             <thead>
@@ -68,6 +100,7 @@ const TeacherDashboard = () => {
                 <th>Type</th>
                 <th>Marks</th>
                 <th>Options</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -83,6 +116,10 @@ const TeacherDashboard = () => {
                         {option.content} {option.is_correct && '(Correct)'}
                       </div>
                     ))}
+                  </td>
+                  <td>
+                    <button onClick={() => handleEdit(question.id)} className={styles.button}>Edit</button>
+                    <button onClick={() => handleDelete(question.id)} className={styles.button}>Delete</button>
                   </td>
                 </tr>
               ))}

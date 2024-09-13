@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './login.module.css';
 
-
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,39 +10,37 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // Ensure all fields are filled and a user type is selected
-    if (username && password && userType) {
-      try {
-        // Make a POST request to the login API
-        const response = await fetch(`http://localhost:8000/user/api/login/`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username, password }), // Send username and password
-        });
-
-        // Check if the response is successful
-        if (response.ok) {
-          const data = await response.json();
-          localStorage.setItem('authToken', data.access); // Store JWT token
-          localStorage.setItem('username', username);
-          localStorage.setItem('userType', userType); // Store the user type
-
-          // Navigate to the respective dashboard based on the user type
-          if (userType === 'teacher') {
-            navigate('/teacher-dashboard');
-          } else if (userType === 'student') {
-            navigate('/student-dashboard');
-          }
-        } else {
-          setError('Invalid username or password.');
-        }
-      } catch (error) {
-        setError('Login failed.');
-      }
-    } else {
+    if (!username || !password || !userType) {
       setError('Please fill in all fields and select a user type.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8000/user/api/login/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password, userType }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('authToken', data.access); // JWT token
+        localStorage.setItem('username', username);     // Store username
+        localStorage.setItem('userType', userType);     // Store userType
+
+        if (userType === 'teacher') {
+          localStorage.setItem('teacher_id', data.teacher_id); // Store teacher_id
+          navigate('/teacher-dashboard');
+        } else if (userType === 'student') {
+          navigate('/student-dashboard');
+        }
+      } else {
+        setError('Invalid username or password.');
+      }
+    } catch (error) {
+      setError('Login failed. Please try again.');
     }
   };
 
@@ -71,6 +68,7 @@ const Login = () => {
           />
         </div>
         <div className={styles.userTypeGroup}>
+          <label>Select User Type:</label>
           <button
             type="button"
             className={`${styles.userTypeButton} ${userType === 'teacher' ? styles.selected : ''}`}
