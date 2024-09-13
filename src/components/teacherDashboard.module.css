@@ -1,0 +1,94 @@
+/* TeacherDashboard.module.css */
+
+.pageContainer {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+.mainContent {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.error {
+  color: red;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table th, .table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  font-size: 1rem;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #555;
+}
+
+.table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.table tr:hover {
+  background-color: #e0e0e0;
+}
+
+.table td {
+  vertical-align: top;
+}
+
+.button {
+  padding: 8px 12px;
+  margin: 2px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  text-align: center;
+  color: #fff;
+}
+
+.button:hover {
+  opacity: 0.9;
+}
+
+.button:nth-of-type(1) {
+  background-color: #007bff;
+}
+
+.button:nth-of-type(1):hover {
+  background-color: #0056b3;
+}
+
+.button:nth-of-type(2) {
+  background-color: #dc3545;
+}
+
+.button:nth-of-type(2):hover {
+  background-color: #c82333;
+}
+
+.correctOption {
+  font-weight: bold;
+  color: green;
+}
