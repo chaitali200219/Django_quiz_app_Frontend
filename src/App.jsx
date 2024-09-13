@@ -11,6 +11,9 @@ import CreateQuestionForm from './components/CreateQuestionForm';
 import UpdateQuestionForm from './components/UpdateQuestionForm';
 import CreateExamForm from './components/CreateExamForm';
 import styles from './app.module.css'; 
+import NavbarProfile from './components/NavbarProfile';
+
+import ExamSection from './components/ExamSection';
 
 const App = () => {
   const location = useLocation();  // Get the current route
@@ -77,6 +80,24 @@ const App = () => {
               element={
                 <PrivateRoute 
                   element={<CreateExamForm />} 
+                  allowedRoles={['teacher']}
+                />
+              }
+            />
+            <Route 
+              path="/profile" 
+              element={
+                <PrivateRoute 
+                  element={<NavbarProfile />} 
+                  allowedRoles={['teacher', 'student']} // Adjust based on user roles
+                />
+              }
+            />
+            <Route 
+              path="/exam-section" 
+              element={
+                <PrivateRoute 
+                  element={<ExamSection />} 
                   allowedRoles={['teacher']}
                 />
               }

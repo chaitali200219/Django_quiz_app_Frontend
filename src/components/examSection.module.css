@@ -1,0 +1,46 @@
+.examSection {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+  }
+  
+  .tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button.activeTab {
+    background-color: #0056b3;
+  }
+  
+  .examTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .examTable th, .examTable td {
+    padding: 12px;
+    border: 1px solid #ddd;
+  }
+  
+  .attemptBtn {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .viewResultBtn {
+    background-color: #ffc107;
+    color: white;
+  }
+  

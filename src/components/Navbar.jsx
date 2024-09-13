@@ -22,19 +22,19 @@ const Navbar = () => {
         <Link to="/create-exam" className={styles.navbarLink}>Create Exam</Link>
         <Link to="/create-question" className={styles.navbarLink}>Create Questions</Link>
         <Link to="/profile" className={styles.navbarLink}>Profile</Link>
-        {username ? ( // Check if the username is available
+        {username ? (
           <div className={styles.navbarProfile}>
             <span>{username}</span>
             <div className={styles.dropdown}>
               <button className={styles.dropbtn}>Profile</button>
               <div className={styles.dropdownContent}>
-                <Link to="/profile">My Profile</Link>
+                
                 <a href="#" onClick={handleLogout}>Logout</a>
               </div>
             </div>
           </div>
         ) : (
-          <Link to="/login" className={styles.navbarLink}>Login</Link> // Show login if not authenticated
+          <Link to="/login" className={styles.navbarLink}>Login</Link>
         )}
       </div>
     </nav>

@@ -1,0 +1,39 @@
+.profilePage {
+    background: #f0f4f8; /* Light background color for the whole page */
+    min-height: 100vh; /* Ensure the page takes full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .profileContainer {
+    background: #ffffff; /* White background for profile container */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    padding: 20px;
+    max-width: 800px; /* Restrict maximum width for better readability */
+    width: 100%; /* Full width within max-width */
+  }
+  
+  .welcomeMessage {
+    font-size: 2rem; /* Larger font size for the welcome message */
+    color: #333333; /* Darker text color for better contrast */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profileContent {
+    font-size: 1.2rem; /* Slightly larger font size for content */
+    color: #555555; /* Medium text color for content */
+  }
+  
+  .profileDetails {
+    margin-top: 20px;
+    padding: 10px;
+    border-top: 1px solid #dddddd; /* Divider line */
+  }
+  
+  .profileDetails p {
+    margin: 10px 0;
+  }
+  
