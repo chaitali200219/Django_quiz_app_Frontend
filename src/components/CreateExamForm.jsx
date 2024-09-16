@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from './createExamForm.module.css'; 
+import { useNavigate } from 'react-router-dom';
 
 const API_URL = 'http://localhost:8000';
 
@@ -33,6 +34,7 @@ const CreateExamForm = () => {
   const [success, setSuccess] = useState('');
   
   const authToken = localStorage.getItem('authToken');
+  const navigate = useNavigate();  // Use navigate for redirect
 
   useEffect(() => {
     const getQuestions = async () => {
@@ -84,6 +86,9 @@ const CreateExamForm = () => {
         setDuration('');
         setAssignedQuestions([]);
         setStatus(true); // Reset to default boolean value
+        setTimeout(() => {
+          navigate('/exam-section');  // Redirect to the exam section
+        }, 2000);
       } else {
         throw new Error('Failed to create exam');
       }

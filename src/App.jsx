@@ -5,12 +5,16 @@ import Register from './components/Register';
 import Navbar from './components/Navbar';
 import StudentNavbar from './components/student_navbar'; // Ensure this file exists
 import Footer from './components/Footer';
+import ErrorBoundary from './components/ErrorBoundary';
 import TeacherDashboard from './components/TeacherDashboard';
 import StudentDashboard from './components/StudentDashboard';
-import ErrorBoundary from './components/ErrorBoundary';
 import CreateQuestionForm from './components/CreateQuestionForm';
+import UpdateQuestionForm from './components/UpdateQuestionForm';
 import CreateExamForm from './components/CreateExamForm';
-import styles from './app.module.css';
+import styles from './app.module.css'; 
+import NavbarProfile from './components/NavbarProfile';
+
+import ExamSection from './components/ExamSection';
 
 const App = () => {
   const location = useLocation();
@@ -69,6 +73,15 @@ const App = () => {
               }
             />
             <Route 
+              path="/update-question/:questionId" 
+              element={
+                <PrivateRoute 
+                  element={<UpdateQuestionForm />} 
+                  allowedRoles={['teacher']}
+                />
+              }
+            />
+            <Route 
               path="/create-exam" 
               element={
                 <PrivateRoute 
@@ -77,6 +90,25 @@ const App = () => {
                 />
               }
             />
+            <Route 
+              path="/profile" 
+              element={
+                <PrivateRoute 
+                  element={<NavbarProfile />} 
+                  allowedRoles={['teacher', 'student']} // Adjust based on user roles
+                />
+              }
+            />
+            <Route 
+              path="/exam-section" 
+              element={
+                <PrivateRoute 
+                  element={<ExamSection />} 
+                  allowedRoles={['teacher']}
+                />
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
 
