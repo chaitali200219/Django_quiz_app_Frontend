@@ -1,18 +1,19 @@
-import React from 'react';
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
+import StudentNavbar from './components/student_navbar'; // Ensure this file exists
 import Footer from './components/Footer';
 import TeacherDashboard from './components/TeacherDashboard';
 import StudentDashboard from './components/StudentDashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import CreateQuestionForm from './components/CreateQuestionForm';
 import CreateExamForm from './components/CreateExamForm';
-import styles from './app.module.css'; 
+import styles from './app.module.css';
 
 const App = () => {
-  const location = useLocation();  // Get the current route
+  const location = useLocation();
   const authToken = localStorage.getItem('authToken');
   const userType = localStorage.getItem('userType');
 
@@ -20,14 +21,19 @@ const App = () => {
     return allowedRoles.includes(userType) ? element : <Navigate to="/" />;
   };
 
-  // Define routes where Navbar and Footer should be hidden
   const hideNavbarAndFooter = ['/', '/register', '/teacher-login', '/student-login'];
+
+  const renderNavbar = () => {
+    if (hideNavbarAndFooter.includes(location.pathname)) {
+      return null;
+    }
+    return userType === 'student' ? <StudentNavbar username={localStorage.getItem('username')} /> : <Navbar />;
+  };
 
   return (
     <ErrorBoundary>
       <div className={styles.appContainer}>
-        {/* Conditionally render Navbar */}
-        {!hideNavbarAndFooter.includes(location.pathname) && <Navbar />}
+        {renderNavbar()}
 
         <div className={styles.mainContent}>
           <Routes>
@@ -71,11 +77,9 @@ const App = () => {
                 />
               }
             />
-            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
 
-        {/* Conditionally render Footer */}
         {!hideNavbarAndFooter.includes(location.pathname) && <Footer />}
       </div>
     </ErrorBoundary>
