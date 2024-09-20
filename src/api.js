@@ -15,8 +15,20 @@ export const login = async (username, password) => {
       throw new Error('Login failed');
     }
 
-    const data = await response.json();
-    return data; // { access, refresh }
+    const data = await response.json(); 
+    const { access, refresh, role, user_id } = data; // Assuming your API returns these
+
+    // Store tokens and ID based on user role
+    localStorage.setItem('authToken', access);
+    localStorage.setItem('refreshToken', refresh);
+
+    if (role === 'student') {
+      localStorage.setItem('studentId', user_id); // Store student ID for students
+    } else if (role === 'teacher') {
+      localStorage.setItem('teacherId', user_id); // Store teacher ID for teachers
+    }
+
+    return data; // Return the data if you need it for further use
   } catch (error) {
     throw new Error(error.message);
   }
@@ -37,7 +49,19 @@ export const register = async (username, password, role) => {
       throw new Error('Registration failed');
     }
 
-    const data = await response.json();
+    const data = await response.json(); 
+    const { user_id, access, refresh } = data; // Assuming your API returns these
+
+    // Store tokens and ID based on user role
+    localStorage.setItem('authToken', access);
+    localStorage.setItem('refreshToken', refresh);
+
+    if (role === 'student') {
+      localStorage.setItem('studentId', user_id); // Store student ID for students
+    } else if (role === 'teacher') {
+      localStorage.setItem('teacherId', user_id); // Store teacher ID for teachers
+    }
+
     return data;
   } catch (error) {
     throw new Error(error.message);

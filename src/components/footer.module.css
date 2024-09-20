@@ -1,17 +1,13 @@
-/* footer.module.css */
-
 .footer {
   background-color: #333;
   color: #fff;
   text-align: center;
   padding: 10px 0;
-  position: fixed;
-  bottom: 0;
   width: 100%;
-  left: 0;
-  
+  position: relative; /* Change to relative */
 }
 
 .main-content {
-  padding-bottom: 50px; /* This should be equal to or more than the footer's height */
+  padding-bottom: 50px; /* Ensures there's space at the bottom of the content */
+  min-height: 100vh; /* Ensures the main content takes up at least the full viewport height */
 }

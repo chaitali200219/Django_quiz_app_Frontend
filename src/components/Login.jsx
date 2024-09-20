@@ -34,6 +34,7 @@ const Login = () => {
           localStorage.setItem('teacher_id', data.teacher_id); // Store teacher_id
           navigate('/teacher-dashboard');
         } else if (userType === 'student') {
+          localStorage.setItem('student_id', data.student_id); 
           navigate('/student-dashboard');
         }
       } else {
