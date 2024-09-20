@@ -10,7 +10,9 @@ import StudentDashboard from './components/StudentDashboard';
 import CreateQuestionForm from './components/CreateQuestionForm';
 import UpdateQuestionForm from './components/UpdateQuestionForm';
 import CreateExamForm from './components/CreateExamForm';
-import styles from './app.module.css'; 
+import QuizResults from './components/QuizResults';
+import Leaderboard from './components/leaderboard';
+import styles from './app.module.css';
 
 const App = () => {
   const location = useLocation();  // Get the current route
@@ -81,6 +83,16 @@ const App = () => {
                 />
               }
             />
+            <Route 
+              path="/quiz-results" 
+              element={
+                <PrivateRoute 
+                  element={<QuizResults />} 
+                  allowedRoles={['teacher', 'student']}
+                />
+              }
+            />
+            <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>

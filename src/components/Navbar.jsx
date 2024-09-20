@@ -21,6 +21,8 @@ const Navbar = () => {
       <div className={styles.navbarRight}>
         <Link to="/create-exam" className={styles.navbarLink}>Create Exam</Link>
         <Link to="/create-question" className={styles.navbarLink}>Create Questions</Link>
+        <Link to="/quiz-results" className={styles.navbarLink}>Quiz Results</Link>
+        <Link to="/leaderboard" className={styles.navbarLink}>Leaderboard</Link>
         <Link to="/profile" className={styles.navbarLink}>Profile</Link>
         {username ? ( // Check if the username is available
           <div className={styles.navbarProfile}>
