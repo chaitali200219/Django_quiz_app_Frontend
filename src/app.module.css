@@ -1,0 +1,28 @@
+/* app.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px; /* Adjust this as necessary */
+    overflow-y: auto; /* Ensure that the content can scroll if it's too long */
+  }
+  
+  .footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    position: sticky; /* This keeps the footer at the bottom but visible when you scroll */
+    bottom: 0;
+  }
+  
+  .hiddenFooter {
+    display: none;
+  }
+  
