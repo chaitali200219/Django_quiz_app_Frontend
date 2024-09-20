@@ -1,0 +1,132 @@
+.quizContainer {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #f9f9f9;
+}
+
+.quizContainer h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  color: #333;
+  font-weight: 700;
+}
+
+.timer {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #e67e22; /* Orange for emphasis */
+  font-weight: bold;
+}
+
+.questionContainer {
+  margin-bottom: 30px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.questionContainer h3 {
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.questionContainer p {
+  font-size: 18px;
+  color: #34495e;
+  margin-bottom: 10px;
+}
+
+.questionNumber {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2980b9; /* Blue for question numbers */
+}
+
+.options {
+  margin-top: 15px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px; /* Add more space between options */
+  font-size: 18px;
+  color: #2c3e50;
+  background-color: #ecf0f1;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.option:hover {
+  background-color: #dfe6e9;
+}
+
+.option input {
+  margin-right: 15px;
+  transform: scale(1.2); /* Make radio buttons larger */
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.navigation button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.navigation button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.attemptBtn {
+  background-color: #3498db; /* Blue */
+  color: #fff;
+}
+
+.continueBtn {
+  background-color: #f39c12; /* Orange */
+  color: #fff;
+}
+
+.submitBtn {
+  background-color: #2ecc71; /* Green */
+  color: #fff;
+}
+
+.submitBtn:hover, .attemptBtn:hover, .continueBtn:hover {
+  opacity: 0.9;
+}
+
+/* Styling for question number before each question */
+.questionContainer::before {
+  content: "Question " counter(question) ": ";
+  counter-increment: question;
+  display: block;
+  font-size: 24px;
+  font-weight: bold;
+  color: #3498db;
+  margin-bottom: 5px;
+}
+
+/* Initialize counter for question numbering */
+.quizContainer {
+  counter-reset: question;
+}

@@ -5,6 +5,7 @@ import styles from './student_navbar.module.css'; // Ensure this file exists
 const StudentNavbar = ({ username }) => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.clear()
     window.location.href = '/';
   };
 
@@ -16,7 +17,7 @@ const StudentNavbar = ({ username }) => {
         </Link>
       </div>
       <div className={styles.navbarRight}>
-        <Link to="/exams" className={styles.navbarLink}>Exams</Link>
+        <Link to="/student-exams" className={styles.navbarLink}>Exams</Link>
         <Link to="/leaderboard" className={styles.navbarLink}>Leaderboard</Link>
         <Link to="/profile" className={styles.navbarLink}>Profile</Link>
         <div className={styles.navbarProfile}>

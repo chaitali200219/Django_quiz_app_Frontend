@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './CreateQuestionForm.module.css'; // Ensure this file exists
+
+import styles from './CreateQuestionForm.module.css'; // Make sure this file exists
 
 const API_URL = 'http://localhost:8000';
 
@@ -52,6 +53,7 @@ const createQuestion = async (questionData) => {
 
     if (response.status === 401) { // Unauthorized, possibly expired token
       await refreshToken(); // Try to refresh the token
+      // Retry the request with the new token
       authToken = localStorage.getItem('authToken');
       response = await fetch(`${API_URL}/questions/questions/create/`, {
         method: 'POST',
@@ -79,34 +81,25 @@ const createQuestion = async (questionData) => {
 };
 
 const CreateQuestionForm = () => {
+  const [isTeacher, setIsTeacher] = useState(true); // Replace with actual logic
+  const username = localStorage.getItem('username') || '';
+  const navigate = useNavigate(); // Hook for navigation
+
   const [question, setQuestion] = useState('');
   const [questionType, setQuestionType] = useState('MCQ');
   const [marks, setMarks] = useState('');
-  const [options, setOptions] = useState([
-    { content: '', is_correct: false },
-    { content: '', is_correct: false },
-    { content: '', is_correct: false },
-    { content: '', is_correct: false },
-  ]);
+  const [options, setOptions] = useState([{ content: '', is_correct: false }]);
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [questionsList, setQuestionsList] = useState([]);
 
   const handleQuestionTypeChange = (e) => {
     const type = e.target.value;
     setQuestionType(type);
-    setOptions(
-      type === 'MCQ'
-        ? [
-            { content: '', is_correct: false },
-            { content: '', is_correct: false },
-            { content: '', is_correct: false },
-            { content: '', is_correct: false },
-          ]
-        : [
-            { content: 'True', is_correct: false },
-            { content: 'False', is_correct: false },
-          ]
-    );
+    if (type === 'MCQ') {
+      setOptions([{ content: '', is_correct: false }, { content: '', is_correct: false }, { content: '', is_correct: false }, { content: '', is_correct: false }]);
+    } else {
+      setOptions([{ content: 'True', is_correct: false }, { content: 'False', is_correct: false }]);
+    }
   };
 
   const handleOptionChange = (index, e) => {
@@ -122,12 +115,12 @@ const CreateQuestionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!question || !marks || options.some((opt) => !opt.content)) {
+    if (!question || !marks || options.some(opt => !opt.content)) {
       setError('All fields are required.');
       return;
     }
 
-    if (questionType === 'MCQ' && !options.some((opt) => opt.is_correct)) {
+    if (questionType === 'MCQ' && !options.some(opt => opt.is_correct)) {
       setError('Please select the correct answer.');
       return;
     }
@@ -142,24 +135,17 @@ const CreateQuestionForm = () => {
         content: question,
         question_type: questionType,
         marks,
-        options,
+        options
       });
+
+      setQuestionsList([...questionsList, result]);
 
       // Reset form fields
       setQuestion('');
       setMarks('');
-      setOptions(
-        questionType === 'MCQ'
-          ? [
-              { content: '', is_correct: false },
-              { content: '', is_correct: false },
-              { content: '', is_correct: false },
-              { content: '', is_correct: false },
-            ]
-          : [
-              { content: 'True', is_correct: false },
-              { content: 'False', is_correct: false },
-            ]
+      setOptions(questionType === 'MCQ'
+        ? [{ content: '', is_correct: false }, { content: '', is_correct: false }, { content: '', is_correct: false }, { content: '', is_correct: false }]
+        : [{ content: 'True', is_correct: false }, { content: 'False', is_correct: false }]
       );
       setError('');
 
@@ -172,10 +158,12 @@ const CreateQuestionForm = () => {
 
   return (
     <div className={styles.pageContainer}>
+      
+      
       <div className={styles.mainContent}>
         <h2>Create Question</h2>
         {error && <p className={styles.error}>{error}</p>}
-
+        
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.inputGroup}>
             <label className={styles.label}>Question:</label>
@@ -187,15 +175,17 @@ const CreateQuestionForm = () => {
               required
             />
           </div>
-
           <div className={styles.inputGroup}>
             <label className={styles.label}>Question Type:</label>
-            <select value={questionType} onChange={handleQuestionTypeChange} className={styles.select}>
+            <select 
+              value={questionType} 
+              onChange={handleQuestionTypeChange} 
+              className={styles.select}
+            >
               <option value="MCQ">Multiple Choice</option>
               <option value="True">True/False</option>
             </select>
           </div>
-
           <div className={styles.inputGroup}>
             <label className={styles.label}>Marks:</label>
             <input
@@ -204,40 +194,57 @@ const CreateQuestionForm = () => {
               value={marks}
               onChange={(e) => setMarks(e.target.value)}
               required
-              min="1"
             />
           </div>
-
-          <div className={styles.optionsGroup}>
-            {options.map((option, index) => (
-              <div key={index} className={styles.optionGroup}>
+          {questionType === 'MCQ' && options.map((option, index) => (
+            <div key={index} className={styles.optionGroup}>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Option {index + 1}:</label>
                 <input
                   type="text"
                   name="content"
-                  className={styles.optionInput}
+                  className={styles.input}
                   value={option.content}
                   onChange={(e) => handleOptionChange(index, e)}
-                  placeholder={`Option ${index + 1}`}
                   required
                 />
-                <label className={styles.correctLabel}>
+              </div>
+              <div className={styles.inputGroup}>
+                <label className={styles.checkboxLabel}>
                   <input
                     type="checkbox"
                     name="is_correct"
                     checked={option.is_correct}
                     onChange={(e) => handleOptionChange(index, e)}
                   />
-                  Correct
+                  Correct Answer
                 </label>
               </div>
-            ))}
-          </div>
-
-          <button type="submit" className={styles.submitButton}>
-            Create Question
-          </button>
+            </div>
+          ))}
+          {questionType === 'True' && options.map((option, index) => (
+            <div key={index} className={styles.optionGroup}>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Option {index + 1}:</label>
+                <select
+                  name="content"
+                  className={styles.select}
+                  value={option.content}
+                  onChange={(e) => handleOptionChange(index, e)}
+                  required
+                >
+                  <option value="">Select</option>
+                  <option value="True">True</option>
+                  <option value="False">False</option>
+                </select>
+              </div>
+            </div>
+          ))}
+          <button type="submit" className={styles.submitButton}>Create Question</button>
         </form>
       </div>
+
+      
     </div>
   );
 };

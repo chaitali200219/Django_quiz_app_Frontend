@@ -8,6 +8,7 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     localStorage.removeItem('username'); // Also remove the username when logging out
+    localStorage.clear()
     window.location.href = '/';
   };
 
