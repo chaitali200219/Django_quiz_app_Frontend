@@ -1,9 +1,9 @@
-import React from 'react';
-import { useLocation, BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Navbar from './components/Navbar';
-import StudentNavbar from './components/student_navbar'; // Ensure this file exists
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import TeacherDashboard from './components/TeacherDashboard';
@@ -11,43 +11,49 @@ import StudentDashboard from './components/StudentDashboard';
 import CreateQuestionForm from './components/CreateQuestionForm';
 import UpdateQuestionForm from './components/UpdateQuestionForm';
 import CreateExamForm from './components/CreateExamForm';
-<<<<<<< HEAD
 import QuizResults from './components/QuizResults';
 import Leaderboard from './components/leaderboard';
 import styles from './app.module.css';
-=======
-import styles from './app.module.css';
-import NavbarProfile from './components/NavbarProfile';
-import ExamSection from './components/ExamSection'; // For teacher
-import StudentExamSection from './components/studentexamsection'; // For student
-import AttemptQuizPage from './components/quizattempt'; // New component for attempting quizzes
->>>>>>> c38047b272efc58583e0b4aeda7706907ca05f5b
+
+const API_URL = 'http://127.0.0.1:8000'; // Updated backend URL
+
+const fetchLeaderboardEntries = async () => {
+  const response = await axios.get(`${API_URL}/leaderboard-entries/`);
+  return response.data;
+};
 
 const App = () => {
-  const location = useLocation();
+  const location = useLocation();  // Get the current route
   const authToken = localStorage.getItem('authToken');
   const userType = localStorage.getItem('userType');
 
-  // PrivateRoute to restrict access based on user roles
+  const [leaderboardEntries, setLeaderboardEntries] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const getLeaderboardEntries = async () => {
+      try {
+        const entries = await fetchLeaderboardEntries();
+        setLeaderboardEntries(entries);
+      } catch (err) {
+        setError('Failed to fetch leaderboard entries.');
+      }
+    };
+    getLeaderboardEntries();
+  }, []);
+
   const PrivateRoute = ({ element, allowedRoles }) => {
     return allowedRoles.includes(userType) ? element : <Navigate to="/" />;
   };
 
-  // Paths where navbar and footer should be hidden
+  // Define routes where Navbar and Footer should be hidden
   const hideNavbarAndFooter = ['/', '/register', '/teacher-login', '/student-login'];
-
-  // Render Navbar based on userType and hide for specific routes
-  const renderNavbar = () => {
-    if (hideNavbarAndFooter.includes(location.pathname)) {
-      return null;
-    }
-    return userType === 'student' ? <StudentNavbar username={localStorage.getItem('username')} /> : <Navbar />;
-  };
 
   return (
     <ErrorBoundary>
       <div className={styles.appContainer}>
-        {renderNavbar()}
+        {/* Conditionally render Navbar */}
+        {!hideNavbarAndFooter.includes(location.pathname) && <Navbar />}
 
         <div className={styles.mainContent}>
           <Routes>
@@ -55,13 +61,21 @@ const App = () => {
             <Route path="/register" element={<Register />} />
             <Route path="/teacher-login" element={<Login />} />
             <Route path="/student-login" element={<Login />} />
-            {/* Teacher routes */}
             <Route 
               path="/teacher-dashboard" 
               element={
                 <PrivateRoute 
                   element={<TeacherDashboard />} 
                   allowedRoles={['teacher']}
+                />
+              }
+            />
+            <Route 
+              path="/student-dashboard" 
+              element={
+                <PrivateRoute 
+                  element={<StudentDashboard />} 
+                  allowedRoles={['student']}
                 />
               }
             />
@@ -93,68 +107,28 @@ const App = () => {
               }
             />
             <Route 
-<<<<<<< HEAD
               path="/quiz-results" 
               element={
                 <PrivateRoute 
                   element={<QuizResults />} 
-=======
-              path="/exam-section" 
-              element={
-                <PrivateRoute 
-                  element={<ExamSection />} 
-                  allowedRoles={['teacher']}
-                />
-              }
-            />
-            {/* Student routes */}
-            <Route 
-              path="/student-dashboard" 
-              element={
-                <PrivateRoute 
-                  element={<StudentDashboard />} 
-                  allowedRoles={['student']}
-                />
-              }
-            />
-            <Route 
-              path="/student-exams" 
-              element={
-                <PrivateRoute 
-                  element={<StudentExamSection />} 
-                  allowedRoles={['student']}
-                />
-              }
-            />
-            <Route 
-              path="/attempt-quiz/:quizId" 
-              element={
-                <PrivateRoute 
-                  element={<AttemptQuizPage />} 
-                  allowedRoles={['student']}
-                />
-              }
-            />
-            <Route 
-              path="/profile" 
-              element={
-                <PrivateRoute 
-                  element={<NavbarProfile />} 
->>>>>>> c38047b272efc58583e0b4aeda7706907ca05f5b
                   allowedRoles={['teacher', 'student']}
                 />
               }
             />
-<<<<<<< HEAD
-            <Route path="/leaderboard" element={<Leaderboard />} />
-=======
-            {/* Fallback route */}
->>>>>>> c38047b272efc58583e0b4aeda7706907ca05f5b
+            <Route 
+              path="/leaderboard" 
+              element={
+                <PrivateRoute 
+                  element={<Leaderboard />} 
+                  allowedRoles={['teacher', 'student']}
+                />
+              }
+            />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </div>
 
-        {/* Render Footer only if not in the specified routes */}
+        {/* Conditionally render Footer */}
         {!hideNavbarAndFooter.includes(location.pathname) && <Footer />}
       </div>
     </ErrorBoundary>

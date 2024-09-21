@@ -1,0 +1,32 @@
+/* src/components/QuizResults.module.css */
+.pageContainer {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+.error {
+  color: red;
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+.resultsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.resultsTable th, .resultsTable td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+.resultsTable th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #555;
+}
+.resultsTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.resultsTable tr:hover {
+  background-color: #e0e0e0;
+}
