@@ -1,10 +1,11 @@
-// src/components/QuizResults.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './QuizResults.module.css';
 
 const API_URL = 'http://127.0.0.1:8000/results'; // Updated backend URL
 const AUTH_TOKEN = localStorage.getItem('authToken'); // Provided auth token
+const USERNAME = localStorage.getItem('username'); // Assuming username is stored in localStorage
+const USER_ROLE = localStorage.getItem('userRole'); // Assuming user role is stored in localStorage
 
 const fetchQuizResults = async () => {
   const response = await axios.get(`${API_URL}/quiz-results/`, {
@@ -23,7 +24,12 @@ const QuizResults = () => {
     const getQuizResults = async () => {
       try {
         const results = await fetchQuizResults();
-        setQuizResults(results);
+        if (USER_ROLE === 'student') {
+          const filteredResults = results.filter(result => result.student === USERNAME);
+          setQuizResults(filteredResults);
+        } else {
+          setQuizResults(results);
+        }
       } catch (err) {
         console.log(err);
         setError('Failed to fetch quiz results.');
