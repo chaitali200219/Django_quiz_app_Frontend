@@ -119,7 +119,7 @@ const App = () => {
               element={
                 <PrivateRoute 
                   element={<AttemptQuizPage />} 
-                  allowedRoles={['student']}
+                  allowedRoles={['teacher', 'student']}
                 />
               }
             />

@@ -8,13 +8,13 @@ const fetchExams = async (authToken, status = null) => {
   let url = `${API_URL}/answer/quizzes/`;
 
   if (status) {
-    url += `?status=${status}`;  // Append the status as a query parameter
+    url += `?status=${status}`; // Append the status as a query parameter
   }
 
   try {
     const response = await fetch(url, {
       headers: {
-        'Authorization': `Bearer ${authToken}`,
+        Authorization: `Bearer ${authToken}`,
         'Content-Type': 'application/json',
       },
     });
@@ -37,7 +37,7 @@ const StudentExamSection = () => {
   const [loading, setLoading] = useState(false);
   const authToken = localStorage.getItem('authToken');
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const loadExams = async () => {
       setLoading(true);
@@ -46,11 +46,13 @@ const StudentExamSection = () => {
         const data = await fetchExams(authToken, status);
 
         if (tab === 'completed') {
-          // Filter exams that are completed only
-          const completedExams = data.filter(exam => exam.status === 'Completed');
+          // Set exams as completed only
+          const completedExams = data.filter((exam) => exam.status === 'Completed');
           setExams(completedExams);
         } else {
-          setExams(data);
+          // Filter out completed exams from 'all' tab
+          const nonCompletedExams = data.filter((exam) => exam.status !== 'Completed');
+          setExams(nonCompletedExams);
         }
 
         setError('');
@@ -66,9 +68,10 @@ const StudentExamSection = () => {
     } else {
       setError('Authentication token is missing');
     }
-  }, [authToken, tab]);  // Re-fetch exams when the tab changes
+  }, [authToken, tab]); // Re-fetch exams when the tab changes
 
   const handleAttemptQuiz = (quizId) => {
+    // Simulate the completion of the quiz and update its status
     navigate(`/attempt-quiz/${quizId}`);
   };
 
@@ -79,8 +82,18 @@ const StudentExamSection = () => {
       {loading && <p>Loading exams...</p>}
 
       <div className={styles.tabs}>
-        <button onClick={() => setTab('all')} className={tab === 'all' ? styles.activeTab : ''}>All</button>
-        <button onClick={() => setTab('completed')} className={tab === 'completed' ? styles.activeTab : ''}>Completed</button>
+        <button
+          onClick={() => setTab('all')}
+          className={tab === 'all' ? styles.activeTab : ''}
+        >
+          All
+        </button>
+        <button
+          onClick={() => setTab('completed')}
+          className={tab === 'completed' ? styles.activeTab : ''}
+        >
+          Completed
+        </button>
       </div>
 
       {!loading && exams.length > 0 && (
@@ -95,7 +108,7 @@ const StudentExamSection = () => {
             </tr>
           </thead>
           <tbody>
-            {exams.map(exam => (
+            {exams.map((exam) => (
               <tr key={exam.id}>
                 <td>{exam.title}</td>
                 <td>{exam.duration} minutes</td>
@@ -103,7 +116,12 @@ const StudentExamSection = () => {
                 <td>{exam.status}</td>
                 <td>
                   {tab === 'all' && exam.status === 'Not Started' ? (
-                    <button className={styles.attemptBtn} onClick={() => handleAttemptQuiz(exam.id)}>Attempt Quiz</button>
+                    <button
+                      className={styles.attemptBtn}
+                      onClick={() => handleAttemptQuiz(exam.id)}
+                    >
+                      Attempt Quiz
+                    </button>
                   ) : tab === 'all' && exam.status === 'In Progress' ? (
                     <button className={styles.continueBtn}>Continue Quiz</button>
                   ) : exam.status === 'Completed' ? (

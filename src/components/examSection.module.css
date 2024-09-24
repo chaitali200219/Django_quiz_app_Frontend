@@ -1,46 +1,68 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the body takes the full height of the viewport */
+  margin: 0; /* Remove default margin */
+}
+
+.main-content {
+  flex: 1; /* This allows the main content to grow and fill available space */
+  display: flex; /* Enable flexbox for alignment */
+  flex-direction: column; /* Ensure children stack vertically */
+}
+
 .examSection {
-    margin: 20px;
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-  }
-  
-  .tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  button.activeTab {
-    background-color: #0056b3;
-  }
-  
-  .examTable {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .examTable th, .examTable td {
-    padding: 12px;
-    border: 1px solid #ddd;
-  }
-  
-  .attemptBtn {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .viewResultBtn {
-    background-color: #ffc107;
-    color: white;
-  }
-  
+  margin: 20px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  flex: 1; /* Allow the exam section to grow and fill the available space */
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+button.activeTab {
+  background-color: #0056b3;
+}
+
+.examTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.examTable th, .examTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+.attemptBtn {
+  background-color: #28a745;
+  color: white;
+}
+
+.viewResultBtn {
+  background-color: #ffc107;
+  color: white;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+  margin-top: 10px;
+}

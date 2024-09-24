@@ -1,13 +1,23 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensures the body takes the full height of the viewport */
+  margin: 0; /* Remove default margin */
+}
+
+.main-content {
+  flex: 1; /* This allows the main content to grow and fill available space */
+  padding-bottom: 50px; /* Ensures there's space at the bottom of the content */
+}
+
 .footer {
   background-color: #333;
   color: #fff;
   text-align: center;
   padding: 10px 0;
   width: 100%;
-  position: relative; /* Change to relative */
-}
-
-.main-content {
-  padding-bottom: 50px; /* Ensures there's space at the bottom of the content */
-  min-height: 100vh; /* Ensures the main content takes up at least the full viewport height */
+  position: fixed;
+  height: 50px;
+  bottom: 0px;
+  margin-bottom: 0px;
 }

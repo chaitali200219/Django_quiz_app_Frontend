@@ -78,7 +78,7 @@ const QuizAttempt = () => {
         }
         setQuiz(data);
         setError('');
-        setTimer(data.duration * 60);  // Set timer based on quiz duration
+        setTimer(data.duration * 60); // Set timer based on quiz duration
       } catch (error) {
         setError(`Failed to load quiz: ${error.message}`);
       } finally {
@@ -115,33 +115,63 @@ const QuizAttempt = () => {
 
   const submitCurrentAnswer = async () => {
     if (!studentIdValid) {
-      setError('Student ID is missing or invalid');
-      return;
+        setError('Student ID is missing or invalid');
+        return;
     }
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
     const optionId = selectedOptions[currentQuestion.id];
 
     if (!optionId) {
-      setError('Please select an option before proceeding');
-      return;
+        setError('Please select an option before proceeding');
+        return;
     }
 
     const answer = {
-      quiz: quizId,
-      question: currentQuestion.id,
-      option: optionId,
-      is_correct: false,
-      status: 'submitted',
+        quiz: quizId,
+        question: currentQuestion.id,
+        option: optionId,
+        is_correct: false,
+        status: 'submitted',
     };
 
     try {
-      await submitAnswer(answer, authToken, studentId);
-      setError('');
+        // Check if a submission already exists for the current question
+        const existingSubmission = await fetch(`${API_URL}/answer/answer-submissions/?quiz=${quizId}&question=${currentQuestion.id}`, {
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        let submissionId = null;
+        if (existingSubmission.ok) {
+            const data = await existingSubmission.json();
+            if (data.length > 0) {
+                submissionId = data[0].id; // Get the ID of the existing submission
+            }
+        }
+
+        // If submissionId exists, update it; otherwise, create a new submission
+        if (submissionId) {
+            await fetch(`${API_URL}/answer/answer-submissions/${submissionId}/`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ ...answer, id: submissionId }),
+            });
+        } else {
+            await submitAnswer(answer, authToken, studentId);
+        }
+
+        setError('');
     } catch (error) {
-      setError(`Failed to submit answer: ${error.message}`);
+        setError(`Failed to submit answer: ${error.message}`);
     }
-  };
+};
+
 
   const handleNext = async () => {
     await submitCurrentAnswer();
@@ -156,9 +186,15 @@ const QuizAttempt = () => {
     }
   };
 
+  const handlePrevious = () => {
+    if (currentQuestionIndex > 0) {
+      setCurrentQuestionIndex(prevIndex => prevIndex - 1);
+    }
+  };
+
   const handleSubmitQuiz = async () => {
     // Final submission logic
-    navigate("/student-dashboard");  // Navigate to student dashboard after submitting
+    navigate("/student-dashboard"); // Navigate to student dashboard after submitting
   };
 
   if (loading) return <p>Loading quiz...</p>;
@@ -177,7 +213,7 @@ const QuizAttempt = () => {
       </div>
       <form>
         <div className={styles.questionContainer}>
-          <h3>{currentQuestionIndex + 1}. {currentQuestion.content}</h3>  {/* Display question number */}
+          <h3>{currentQuestionIndex + 1}. {currentQuestion.content}</h3>
           <div className={styles.options}>
             {currentQuestion.options.map(option => (
               <label key={option.id} className={styles.option}>
@@ -196,6 +232,14 @@ const QuizAttempt = () => {
 
         {/* Navigation Buttons */}
         <div className={styles.navigation}>
+          <button
+            type="button"
+            className={styles.previousBtn}
+            onClick={handlePrevious}
+            disabled={currentQuestionIndex === 0} // Disable if on the first question
+          >
+            Previous
+          </button>
           <button type="button" className={styles.continueBtn} onClick={handleNext}>
             {currentQuestionIndex === quiz.questions.length - 1 ? 'Submit Quiz' : 'Next'}
           </button>

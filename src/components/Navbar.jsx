@@ -20,7 +20,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.navbarRight}>
-        <Link to="/create-exam" className={styles.navbarLink}>Create Exam</Link>
+        <Link to="/exam-section" className={styles.navbarLink}>Exams</Link>
         <Link to="/create-question" className={styles.navbarLink}>Create Questions</Link>
         <Link to="/profile" className={styles.navbarLink}>Profile</Link>
         {username ? (
